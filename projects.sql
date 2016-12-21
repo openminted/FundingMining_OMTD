@@ -15,7 +15,7 @@ hidden var 'nihnegatives' from select jmergeregexp(jgroup(word)) from (select * 
 
 
 
-create temp table pubs as setschema 'c1,c2' select jsonpath(c1, '$.id', '$.text') from stdinput();
+create temp table pubs as select 1 as c1,c2 from (setschema 'c2' xmlparse root:sofa '{"sofa/@/sofastring":"Hello world."}' select * from stdinput());
 
 create temp table matched_undefined_wt_only as select distinct docid, "40|wt__________::unidentified" as id from (setschema 'docid,prev,middle,next'
 select c1 as docid, textwindow2s(c2,20,2,3, '(\bWel?lcome Trust\b|\bWT\b)') from (setschema 'c1,c2' select * from pubs where c2 is not null)) where regexprmatches('\bWel?lcome Trust\b', middle) or 
@@ -135,7 +135,7 @@ select docid, id,sqroot(min(1.49,confidence)/1.5) as conf, fundingclass1 from ( 
 
 delete from matched_undefined_wt_only where docid in (select docid from output_table where fundingClass1="WT");
 
-create temp table result as select 
+select 
 jdict("@graph", jgroup(
   	           jdict
     			("@id","funding1Uri",
@@ -162,14 +162,6 @@ jdict("@graph", jgroup(
 from output_table;
 
 
-select '<?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmlns:tcas="http:///uima/tcas.ecore" xmlns:xmi="http://www.omg.org/XMI" xmlns:cas="http:///uima/cas.ecore"
-  xmi:version="2.0">
-  <cas:NULL xmi:id="0" />
-  <tcas:DocumentAnnotation xmi:id="8" sofa="1" begin="0" end="12" language="x-unspecified" />
-  <cas:Sofa xmi:id="1" sofaNum="1" sofaID="_InitialView" mimeType="text" sofaString="'||c1||'" />
-  <cas:View sofa="1" members="8" />
-</xmi:XMI>' from result;
 
 
 
