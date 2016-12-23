@@ -20,4 +20,4 @@ COPY projects.sql /usr/app/src/projects.sql
 COPY projects.db.gz /usr/app/src/projects.db.gz
 RUN gunzip /usr/app/src/projects.db.gz
 
-CMD ["/bin/sh", "-c", "for i in /usr/app/src/data/*.xml;do cat $i | python /var/lib/mantis/src/mexec.py -f /usr/app/src/projects.sql -d /usr/app/src/projects.db > $i.json;done"]
+CMD ["/bin/sh", "-c", "for i in /usr/app/src/data/*.xml ;do echo $i && cat $i | python /var/lib/mantis/src/mexec.py -f /usr/app/src/projects.sql -d /usr/app/src/projects.db > $i.json;done"]

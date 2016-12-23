@@ -11,6 +11,8 @@
 ### Run 
 `docker run -it -v <host-dir>:/usr/app/src/data --rm --name <name> <name>`
 
+Remember to declare <host-dir> with an absolute path, for example `${PWD}/` or `/home/user/data`.
+
 - For example
 `docker run -it -v $PWD/<xml_files>:/usr/app/src/data --rm --name <name> <name>`
 
